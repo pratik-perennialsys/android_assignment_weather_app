@@ -1,3 +1,17 @@
 <resources>
     <string name="app_name">AndroidAssignmentWeatherApp</string>
+    <string name="txt_login">Login</string>
+    <string name="txt_signup">Not registered yet? \n<b>Sign up</b></string>
+    <string name="txt_member_login">Already a member?\n<b>Login instead</b></string>
+    <string name="hint_email">*enter email id (example@test.com)</string>
+    <string name="hint_pwd">*enter your password</string>
+    <string name="hint_username">*Enter username (John Doe)</string>
+    <string name="hint_confirm_pwd">*confirm password</string>
+    <string name="txt_register">Register</string>
+    <string name="err_check_input">Please check your input..</string>
+    <string name="err_check_email">Please enter valid email id..</string>
+    <string name="err_check_password">Password cannot be blank..</string>
+    <string name="err_password_len">Password must be more than 5 characters..</string>
+    <string name="err_check_username">Username cannot be blank..</string>
+    <string name="err_password_match">Password and confirm password not matching..</string>
 </resources>
