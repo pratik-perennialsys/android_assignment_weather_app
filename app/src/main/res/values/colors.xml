@@ -8,4 +8,6 @@
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
     <color name="color_activity_background">#F5FEFF</color>
+    <color name="color_toolbar">#8141C7D8</color>
+
 </resources>

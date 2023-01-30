@@ -2,6 +2,7 @@ package com.perennial.androidassignmentweatherapp.utils
 
 import android.text.TextUtils
 
+const val MIN_PASSWORD_LEN = 5
 class FormValidationUtils {
     companion object {
         fun validateEmail(email: String): Boolean {
