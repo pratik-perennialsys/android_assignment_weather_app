@@ -33,8 +33,14 @@ Uses below libraries:
     
     c. GSON converter - serialization of JSON
     
-    d. Picasso -  image loading
-        
-    e. dagger-hilt - dependency injection
+**Security**
+
+    a. Using Encrypted Shared Preferences to store logged in user session
+    
+    b. Using SQLCipher to encrypt ROOM database 
+    
+**Note:** 
+       Need to update SQL_CIPHER_SECRET_KEY at gradle.properties->SQL_CIPHER_SECRET_KEY
+       
  
 
