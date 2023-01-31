@@ -40,7 +40,10 @@ Uses below libraries:
     b. Using SQLCipher to encrypt ROOM database 
     
 **Note:** 
+       
        Need to update SQL_CIPHER_SECRET_KEY at gradle.properties->SQL_CIPHER_SECRET_KEY
+       
+       Need to update OPEN_WEATHER_API_KEY at gradle.properties->OPEN_WEATHER_API_KEY
        
  
 
