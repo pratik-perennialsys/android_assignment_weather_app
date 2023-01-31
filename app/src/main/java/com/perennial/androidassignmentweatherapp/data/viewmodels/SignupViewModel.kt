@@ -3,14 +3,13 @@ package com.perennial.androidassignmentweatherapp.data.viewmodels
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.perennial.androidassignmentweatherapp.data.models.UserModelEntity
+import com.perennial.androidassignmentweatherapp.data.models.entities.UserModelEntity
 import com.perennial.androidassignmentweatherapp.data.repo.implementation.SignupRepositoryImpl
 import com.perennial.androidassignmentweatherapp.utils.FormValidationUtils
 import com.perennial.androidassignmentweatherapp.utils.LoginSignupConstants
 import androidx.lifecycle.viewModelScope
 import com.perennial.androidassignmentweatherapp.utils.MIN_PASSWORD_LEN
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -67,18 +66,20 @@ class SignupViewModel @Inject constructor(
 
     fun performSignup() {
         viewModelScope.launch {
-            val signupStatus = repository.insertSignedUpUser(UserModelEntity(
-                userId = null,
-                userEmail = userEmail,
-                userName = username,
-                userPassword = password
-            ))
-
-            if (signupStatus == -1L) {
-                _signupResult.value = LoginSignupConstants.EN_SIGNUP_FAILED.toString()
-            } else {
+            val signupStatus = repository.insertSignedUpUser(
+                UserModelEntity(
+                    userId = null,
+                    userEmail = userEmail,
+                    userName = username,
+                    userPassword = password
+                )
+            )
+            if (signupStatus == LoginSignupConstants.EN_SIGNUP_FAIL_REASON.toString().toLong()) {
+                _signupResult.value = LoginSignupConstants.EN_USER_ALREADY_EXIST.toString()
+            } else if (signupStatus > 0) {
                 _signupResult.value = LoginSignupConstants.EN_SIGNUP_SUCCESS.toString()
-            }
+            } else
+                _signupResult.value = LoginSignupConstants.EN_SIGNUP_FAILED.toString()
         }
     }
 

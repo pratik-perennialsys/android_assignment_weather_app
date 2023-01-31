@@ -1,6 +1,6 @@
 package com.perennial.androidassignmentweatherapp.data.repo.implementation
 
-import com.perennial.androidassignmentweatherapp.data.models.UserModelEntity
+import com.perennial.androidassignmentweatherapp.data.models.entities.UserModelEntity
 import com.perennial.androidassignmentweatherapp.data.repo.interfaces.LoginRepository
 import com.perennial.androidassignmentweatherapp.data.room.dao.LoginDao
 import javax.inject.Inject

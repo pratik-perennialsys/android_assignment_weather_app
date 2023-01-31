@@ -3,6 +3,7 @@ package com.perennial.androidassignmentweatherapp.di.local
 import android.content.Context
 import androidx.room.Room
 import com.perennial.androidassignmentweatherapp.BuildConfig
+import com.perennial.androidassignmentweatherapp.data.room.dao.LocationWeatherDao
 import com.perennial.androidassignmentweatherapp.data.room.dao.LoginDao
 import com.perennial.androidassignmentweatherapp.data.room.dao.SignupDao
 import com.perennial.androidassignmentweatherapp.data.room.database.AppDatabase
@@ -37,5 +38,10 @@ class DatabaseModule {
     @Provides
     fun provideLoginDAO(appDatabase: AppDatabase): LoginDao {
         return appDatabase.loginDatabaseDao
+    }
+
+    @Provides
+    fun provideLocationWeatherDAO(appDatabase: AppDatabase): LocationWeatherDao {
+        return appDatabase.locationWeatherDao
     }
 }

@@ -19,4 +19,15 @@
     <string name="err_login_failed">Failed to login, have you signed up?</string>
     <string name="login_success">Login Successful!</string>
     <string name="txt_weather_title">Weather today</string>
+    <string name="txt_dummy_city">Pune</string>
+    <string name="txt_dummy_country">India</string>
+    <string name="sym_degree">\u2103 </string>
+    <string name="txt_current_weather">Current Weather </string>
+    <string name="txt_prev_weather_list">Previous Weathers </string>
+    <string name="txt_curr_temp">Current Temperature: </string>
+    <string name="txt_temp">Temperature: </string>
+    <string name="txt_sunrise_time">Sunrise Time: </string>
+    <string name="txt_sunset_time">Sunset Time: </string>
+    <string name="txt_loading">Loading please wait...</string>
+    <string name="txt_time">Time: </string>
 </resources>

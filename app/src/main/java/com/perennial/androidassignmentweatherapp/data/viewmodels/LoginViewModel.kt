@@ -1,11 +1,10 @@
 package com.perennial.androidassignmentweatherapp.data.viewmodels
 
-import android.content.SharedPreferences
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.perennial.androidassignmentweatherapp.data.models.UserModelEntity
+import com.perennial.androidassignmentweatherapp.data.models.entities.UserModelEntity
 import com.perennial.androidassignmentweatherapp.data.repo.implementation.LoginRepositoryImpl
 import com.perennial.androidassignmentweatherapp.utils.FormValidationUtils
 import com.perennial.androidassignmentweatherapp.utils.LoginSignupConstants

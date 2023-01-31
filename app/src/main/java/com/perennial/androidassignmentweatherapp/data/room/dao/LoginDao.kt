@@ -2,7 +2,7 @@ package com.perennial.androidassignmentweatherapp.data.room.dao
 
 import androidx.room.Dao
 import androidx.room.Query
-import com.perennial.androidassignmentweatherapp.data.models.UserModelEntity
+import com.perennial.androidassignmentweatherapp.data.models.entities.UserModelEntity
 
 @Dao
 interface LoginDao {

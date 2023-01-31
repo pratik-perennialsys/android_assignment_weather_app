@@ -1,4 +1,4 @@
-package com.perennial.androidassignmentweatherapp.data.models
+package com.perennial.androidassignmentweatherapp.data.models.entities
 
 import androidx.room.*
 

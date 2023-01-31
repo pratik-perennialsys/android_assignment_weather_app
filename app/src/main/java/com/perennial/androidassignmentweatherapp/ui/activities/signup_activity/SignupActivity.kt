@@ -1,16 +1,11 @@
 package com.perennial.androidassignmentweatherapp.ui.activities.signup_activity
 
-import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.activity.viewModels
 import androidx.databinding.DataBindingUtil
-import androidx.lifecycle.ViewModelProviders
-import androidx.lifecycle.lifecycleScope
 import com.perennial.androidassignmentweatherapp.R
-import com.perennial.androidassignmentweatherapp.data.models.UserModelEntity
 import com.perennial.androidassignmentweatherapp.data.viewmodels.SignupViewModel
-import com.perennial.androidassignmentweatherapp.ui.activities.login_activity.LoginActivity
 import com.perennial.androidassignmentweatherapp.databinding.ActivitySignupBinding
 import com.perennial.androidassignmentweatherapp.utils.LoginSignupConstants
 import com.perennial.androidassignmentweatherapp.utils.ToastUtils

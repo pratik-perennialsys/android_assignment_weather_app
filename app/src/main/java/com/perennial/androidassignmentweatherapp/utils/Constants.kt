@@ -16,6 +16,7 @@ enum class SharedPrefConstants(private val constName: String) {
     EN_PREF_USER_EMAIL("pref_user_email"),
     EN_PREF_USER_NAME("pref_user_name"),
     EN_PREF_USER_LOGGED_IN("pref_user_logged_in"),
+    EN_PREF_USER_TOKEN("pref_user_access_token"),
     ;
     override fun toString(): String {
         return constName
@@ -34,7 +35,18 @@ enum class LoginSignupConstants(val eventName: String) {
     ),
     EN_FORM_VALIDATED("validated"),
     EN_SIGNUP_SUCCESS("Signed up successfully"),
-    EN_SIGNUP_FAILED("Something went wrong, Please try again!"), ;
+    EN_SIGNUP_FAILED("Something went wrong, Please try again!"),
+    EN_SIGNUP_FAIL_REASON("-999"),
+    EN_USER_ALREADY_EXIST("This email is already registered!");
+
+    override fun toString(): String {
+        return eventName
+    }
+}
+
+enum class DateTimeConstants(val eventName: String) {
+    EN_RAIN("Rain"),
+    EN_EVENING_TIME("18:00:00"),;
 
     override fun toString(): String {
         return eventName
