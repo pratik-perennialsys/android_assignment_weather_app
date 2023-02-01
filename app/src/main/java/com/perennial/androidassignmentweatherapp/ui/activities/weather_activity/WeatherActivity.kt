@@ -13,7 +13,6 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.Observer
 import com.google.android.gms.common.api.ResolvableApiException
 import com.google.android.gms.location.LocationServices
 import com.google.android.gms.location.LocationSettingsRequest
@@ -46,22 +45,23 @@ class WeatherActivity : AppCompatActivity() {
     private val locationPermissionResultReceiver = registerForActivityResult(
         ActivityResultContracts.RequestMultiplePermissions()
     ) { permissions ->
-        if (permissions[Manifest.permission.ACCESS_FINE_LOCATION] == true || permissions[Manifest.permission.ACCESS_COARSE_LOCATION] == true) {
+        if (permissions[Manifest.permission.ACCESS_FINE_LOCATION] == true ||
+            permissions[Manifest.permission.ACCESS_COARSE_LOCATION] == true
+        ) {
             checkClientSettings()
         } else {
-            showPermissionDeniedDialog()
+            showPermissionDeniedToast()
         }
     }
 
-    private fun showPermissionDeniedDialog() {
-        //show dialog
+    private fun showPermissionDeniedToast() {
+        ToastUtils.showShortToast(this, getString(R.string.err_location_perms_needed))
+        binding.clProgressBar.visibility = View.GONE
     }
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_weather)
-
         init()
         getCurrentLocation()
     }
@@ -94,7 +94,7 @@ class WeatherActivity : AppCompatActivity() {
 
         viewModel.insertWeatherLiveData.observe(this) { weatherLocationModel ->
             weatherLocationModel.let {
-                if(it>0) {
+                if (it > 0) {
                     viewModel.getPreviousWeatherRecords()
                     replaceFragment(CurrentWeatherFragment())
                 }
@@ -106,15 +106,6 @@ class WeatherActivity : AppCompatActivity() {
                 ToastUtils.showShortToast(this, error)
             }
         }
-        viewModel.weatherListLiveData.observe(this) { data ->
-            data.let {
-                ToastUtils.showShortToast(this, data[0].temperature!!)
-            }
-        }
-    }
-
-    private fun loadFragments() {
-        //inflate fragments here
     }
 
     private fun navigateToLogin() {
@@ -140,7 +131,7 @@ class WeatherActivity : AppCompatActivity() {
     private fun checkClientSettings() {
         locationRequest = LocationRequest.create()
             .setInterval(1000)
-            .setFastestInterval(1000)
+            .setFastestInterval(500)
             .setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY)
 
         val request = LocationSettingsRequest.Builder()
@@ -154,12 +145,10 @@ class WeatherActivity : AppCompatActivity() {
         task.addOnFailureListener { e ->
             if (e is ResolvableApiException) {
                 try {
-                    this.let {
-                        startIntentSenderForResult(
-                            e.resolution.intentSender,
-                            LOCATION_SETTING_REQUEST_CODE, null, 0, 0, 0, null
-                        )
-                    }
+                    startIntentSenderForResult(
+                        e.resolution.intentSender,
+                        LOCATION_SETTING_REQUEST_CODE, null, 0, 0, 0, null
+                    )
                 } catch (sendIntentException: IntentSender.SendIntentException) {
                     sendIntentException.printStackTrace()
                 }
@@ -172,22 +161,21 @@ class WeatherActivity : AppCompatActivity() {
         when (requestCode) {
             LOCATION_SETTING_REQUEST_CODE ->
                 when (resultCode) {
-                Activity.RESULT_OK -> viewModel.getCurrentLocation(locationRequest!!)
-                Activity.RESULT_CANCELED -> Toast.makeText(
-                    this,
-                    "Cannot access location on this device,\nplease check device settings!",
-                    Toast.LENGTH_SHORT
-                ).show()
-            }
+                    Activity.RESULT_OK -> viewModel.getCurrentLocation(locationRequest!!)
+                    Activity.RESULT_CANCELED -> Toast.makeText(
+                        this,
+                        getString(R.string.err_need_location_service),
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
         }
     }
 
-    private fun replaceFragment(fragment: Fragment){
+    private fun replaceFragment(fragment: Fragment) {
         binding.clProgressBar.visibility = View.GONE
         supportFragmentManager
             .beginTransaction()
             .replace(binding.flFragmentContainer.id, fragment)
             .commit()
     }
-
 }

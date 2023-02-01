@@ -6,6 +6,7 @@ import javax.inject.Inject
 
 class SharedPrefUtils @Inject constructor(private val sharedPreferences: SharedPreferences) {
     fun syncUserLoginToPreferences(user: UserModelEntity) {
+        if(sharedPreferences == null) return
         sharedPreferences.edit()
             .putBoolean(SharedPrefConstants.EN_PREF_USER_LOGGED_IN.toString(), true).apply()
         sharedPreferences.edit()
@@ -25,15 +26,7 @@ class SharedPrefUtils @Inject constructor(private val sharedPreferences: SharedP
         sharedPreferences.edit().clear().apply()
     }
 
-    fun getAccessToken(): String? {
-        return sharedPreferences.getString(
-            SharedPrefConstants.EN_PREF_USER_TOKEN.toString(),
-            ""
-        )
-    }
-
-    fun syncAccessToken(token: String) {
-        sharedPreferences.edit().putString(SharedPrefConstants.EN_PREF_USER_TOKEN.toString(), token)
-            .apply()
+    fun getStringValue(key: String): String? {
+        return sharedPreferences.getString(key, null)
     }
 }

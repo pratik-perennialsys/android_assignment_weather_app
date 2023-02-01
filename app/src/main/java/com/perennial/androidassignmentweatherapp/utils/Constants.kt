@@ -1,8 +1,5 @@
 package com.perennial.androidassignmentweatherapp.utils
 
-class Constants {
-
-}
 
 enum class RoomConstants(private val constName: String) {
     EN_DB_NAME("weather_app_db");
@@ -15,9 +12,7 @@ enum class SharedPrefConstants(private val constName: String) {
     EN_PREF_FILE_NAME("pref_weather_app"),
     EN_PREF_USER_EMAIL("pref_user_email"),
     EN_PREF_USER_NAME("pref_user_name"),
-    EN_PREF_USER_LOGGED_IN("pref_user_logged_in"),
-    EN_PREF_USER_TOKEN("pref_user_access_token"),
-    ;
+    EN_PREF_USER_LOGGED_IN("pref_user_logged_in"),;
     override fun toString(): String {
         return constName
     }

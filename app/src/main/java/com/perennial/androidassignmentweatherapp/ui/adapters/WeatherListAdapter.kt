@@ -84,22 +84,21 @@ class WeatherListAdapter(
                     )
                 )
         }
-        currentWeatherItem.time_stamp.let {
-            if (DateTimeUtils.isItEveningTime(it!!))
-                binding.ivWeather.setImageDrawable(
-                    AppCompatResources.getDrawable(
-                        context,
-                        R.drawable.ic_rain
-                    )
+
+        if (currentWeatherItem.isEvening == true)
+            binding.ivWeather.setImageDrawable(
+                AppCompatResources.getDrawable(
+                    context,
+                    R.drawable.ic_night
                 )
-        }
+            )
     }
 
     override fun getItemCount(): Int = weatherList.size
 
 
     class WeatherViewHolder(
-        private val binding: LayoutSingleWeatherItemBinding
+        binding: LayoutSingleWeatherItemBinding
     ) : RecyclerView.ViewHolder(binding.root) {
 
     }

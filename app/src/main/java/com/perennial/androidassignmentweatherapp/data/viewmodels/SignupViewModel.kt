@@ -29,7 +29,6 @@ class SignupViewModel @Inject constructor(
     private val _signupResult = MutableLiveData<String>()
     val signupLiveData: LiveData<String> = _signupResult
 
-    val allUsers: MutableLiveData<List<UserModelEntity>> = MutableLiveData()
 
     fun validateSignupForm() {
         if (username.isEmpty()) {

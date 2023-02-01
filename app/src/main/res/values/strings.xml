@@ -30,4 +30,6 @@
     <string name="txt_sunset_time">Sunset Time: </string>
     <string name="txt_loading">Loading please wait...</string>
     <string name="txt_time">Time: </string>
+    <string name="err_location_perms_needed">Need location permissions to display weather!</string>
+    <string name="err_need_location_service">Cannot access location on this device,\nplease check device settings!</string>
 </resources>

@@ -42,11 +42,9 @@ class LoginViewModel @Inject constructor(val repo: LoginRepositoryImpl,
     fun performLogin(email: String, password: String) {
         viewModelScope.launch(Dispatchers.IO) {
             val loginResult = repo.performLogin(email, password)
-            if(loginResult.isNotEmpty())
+            if(loginResult!=null && loginResult.isNotEmpty())
                 sharedPrefUtils.syncUserLoginToPreferences(loginResult[0])
             _loginResult.postValue(loginResult)
         }
     }
 }
-
-//testImplementation "org.mockito:mockito-inline:3.11.2"

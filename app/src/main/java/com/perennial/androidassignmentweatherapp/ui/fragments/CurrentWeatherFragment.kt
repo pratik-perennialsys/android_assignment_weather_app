@@ -5,7 +5,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.activity.viewModels
 import androidx.annotation.RequiresApi
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
@@ -74,6 +73,4 @@ class CurrentWeatherFragment : Fragment() {
         } else if (viewModel.weatherModelLiveData.value?.weatherCondition == DateTimeConstants.EN_RAIN.toString())
             binding.ivCurrWeather.setImageDrawable(resources.getDrawable(R.drawable.ic_rain))
     }
-
-
 }

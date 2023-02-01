@@ -4,8 +4,9 @@ import android.annotation.SuppressLint
 import android.app.Application
 import android.location.Address
 import android.location.Geocoder
+import android.os.Build
 import android.os.Looper
-import android.widget.Toast
+import androidx.annotation.RequiresApi
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -51,13 +52,13 @@ class LocationWeatherViewModel @Inject constructor(
         }
     }
 
+    @RequiresApi(Build.VERSION_CODES.O)
     fun getWeatherByLocation() {
         viewModelScope.launch(Dispatchers.IO) {
             val res = repository.callWeatherApi(
                 _currentLocationLiveData.value?._lat!!.toString(),
                 _currentLocationLiveData.value?._lng!!.toString()
             )
-
             res.let {
                 if (res.isSuccessful) {
                     _weatherModelLiveData.postValue(getResponseToEntityObject(res.body()))
@@ -67,7 +68,8 @@ class LocationWeatherViewModel @Inject constructor(
                     try {
                         val jObjError = JSONObject(res.errorBody()?.string()!!)
                         error = jObjError.getString("message")
-                    } catch (_: Exception) {
+                    } catch (e: Exception) {
+                        e.printStackTrace()
                     }
                     _weatherApiErrorResponse.postValue(error)
                 }
@@ -89,7 +91,6 @@ class LocationWeatherViewModel @Inject constructor(
             _weatherListLiveData.postValue(weatherRecordsList)
         }
     }
-
 
     @SuppressLint("MissingPermission")
     private fun requestLocationUpdatesNow(locationRequest: LocationRequest) {
@@ -122,15 +123,13 @@ class LocationWeatherViewModel @Inject constructor(
         longitude: Double
     ) {
         val geocoder = Geocoder(appContext.applicationContext, Locale.getDefault())
-
-        viewModelScope.launch(Dispatchers.IO) {
+        viewModelScope.launch(Dispatchers.Default) {
             try {
                 val addresses: List<Address>? = geocoder.getFromLocation(
                     latitude,
                     longitude,
                     5
                 )
-
                 if (addresses != null && addresses.isNotEmpty()) {
                     val city: String = addresses[0].locality ?: ""
                     val country: String? = addresses[0].countryName
@@ -142,6 +141,7 @@ class LocationWeatherViewModel @Inject constructor(
                             _lng = longitude
                         )
                     )
+                    return@launch
                 }
             } catch (e: IOException) {
                 e.printStackTrace()
@@ -149,6 +149,7 @@ class LocationWeatherViewModel @Inject constructor(
         }
     }
 
+    @RequiresApi(Build.VERSION_CODES.O)
     private fun getResponseToEntityObject(responseModel: WeatherApiResponseModel?): WeatherModelEntity? {
         return WeatherModelEntity(
             city = _currentLocationLiveData.value?.city,
@@ -160,6 +161,7 @@ class LocationWeatherViewModel @Inject constructor(
             timeOfSunset = responseModel?.sys?.sunset,
             weatherCondition = responseModel?.weather?.get(0)?.main,
             time_stamp = DateTimeUtils.getCurrentDateTime(),
+            isEvening = DateTimeUtils.isItEveningNow()
         )
     }
 }

@@ -3,7 +3,6 @@ package com.perennial.androidassignmentweatherapp.data.viewmodels
 import android.content.Context
 import android.content.Context.MODE_PRIVATE
 import android.content.SharedPreferences
-import androidx.lifecycle.Observer
 import androidx.room.Room
 import androidx.test.core.app.ApplicationProvider
 import androidx.test.ext.junit.runners.AndroidJUnit4
@@ -21,7 +20,7 @@ import org.junit.Test
 import org.junit.runner.RunWith
 
 @RunWith(AndroidJUnit4::class)
-class LoginViewModelTest : TestCase() {
+class LoginViewModelInstrumentedTest : TestCase() {
     private lateinit var viewModel: LoginViewModel
     lateinit var sharedPrefUtils: SharedPrefUtils
     lateinit var sharedPrefs: SharedPreferences

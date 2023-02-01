@@ -1,15 +1,13 @@
 package com.perennial.androidassignmentweatherapp.ui.fragments
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.perennial.androidassignmentweatherapp.R
 import com.perennial.androidassignmentweatherapp.data.viewmodels.LocationWeatherViewModel
-import com.perennial.androidassignmentweatherapp.databinding.FragmentCurrentWeatherBinding
 import com.perennial.androidassignmentweatherapp.databinding.FragmentWeatherListBinding
 import com.perennial.androidassignmentweatherapp.ui.adapters.WeatherListAdapter
 import dagger.hilt.android.AndroidEntryPoint

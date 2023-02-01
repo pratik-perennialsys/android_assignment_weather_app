@@ -49,11 +49,6 @@ class SignupActivity : AppCompatActivity() {
             if (data == LoginSignupConstants.EN_SIGNUP_SUCCESS.toString())
                 navigateToLogin()
         }
-
-        viewModel.allUsers.observe(this) { data ->
-            if(data!=null)
-                ToastUtils.showShortToast(this, data[0].userEmail!!)
-        }
     }
 
     private fun navigateToLogin() {

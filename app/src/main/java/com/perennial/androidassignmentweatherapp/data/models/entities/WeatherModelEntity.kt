@@ -36,4 +36,7 @@ data class WeatherModelEntity(
 
     @ColumnInfo(name = "time_stamp")
     var time_stamp: String? = null,
+
+    @ColumnInfo(name = "is_evening")
+    var isEvening: Boolean? = null,
 )

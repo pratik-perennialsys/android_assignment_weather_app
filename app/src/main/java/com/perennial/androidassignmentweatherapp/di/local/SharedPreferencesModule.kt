@@ -6,7 +6,6 @@ import android.os.Build
 import androidx.annotation.RequiresApi
 import androidx.security.crypto.EncryptedSharedPreferences
 import androidx.security.crypto.MasterKeys
-import com.perennial.androidassignmentweatherapp.utils.Constants
 import com.perennial.androidassignmentweatherapp.utils.SharedPrefConstants
 import com.perennial.androidassignmentweatherapp.utils.SharedPrefUtils
 import dagger.Module
