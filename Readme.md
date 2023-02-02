@@ -70,7 +70,10 @@ We have covered unit test cases for Viewmodel and Util classes and instrument te
 ![previous weathers](https://user-images.githubusercontent.com/123717712/216235515-25377f7f-e254-4e8b-bfd8-a656cfd516ce.png)
 
 
+
+
 **Note**
-As I'm the only contributor, I've put all code in master branch.
+As I'm the only contributor, I've put all code in main branch.
  
+
 
