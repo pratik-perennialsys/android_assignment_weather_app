@@ -1,10 +1,8 @@
 package com.perennial.androidassignmentweatherapp.ui.adapters
 
 import android.content.Context
-import android.os.Build
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.annotation.RequiresApi
 import androidx.appcompat.content.res.AppCompatResources
 import androidx.recyclerview.widget.RecyclerView
 import com.perennial.androidassignmentweatherapp.R
@@ -31,7 +29,6 @@ class WeatherListAdapter(
         return WeatherViewHolder(binding)
     }
 
-    @RequiresApi(Build.VERSION_CODES.N)
     override fun onBindViewHolder(holder: WeatherViewHolder, position: Int) {
         val currentWeatherItem = weatherList[position]
 

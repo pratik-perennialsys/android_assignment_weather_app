@@ -1,16 +1,14 @@
 package com.perennial.androidassignmentweatherapp.data.viewmodels
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
-import com.perennial.androidassignmentweatherapp.data.models.await
 import com.perennial.androidassignmentweatherapp.data.models.entities.UserModelEntity
 import com.perennial.androidassignmentweatherapp.data.repo.implementation.LoginRepositoryImpl
+import com.perennial.androidassignmentweatherapp.getOrAwaitValue
 import com.perennial.androidassignmentweatherapp.utils.LoginSignupConstants
-import com.perennial.androidassignmentweatherapp.utils.SharedPrefUtils
 import junit.framework.TestCase
 import kotlinx.coroutines.*
 import kotlinx.coroutines.test.StandardTestDispatcher
 import kotlinx.coroutines.test.resetMain
-import kotlinx.coroutines.test.runTest
 import kotlinx.coroutines.test.setMain
 import org.junit.After
 import org.junit.Before
@@ -29,16 +27,13 @@ class LoginViewModelTest {
     @Mock
     var repo: LoginRepositoryImpl? = null
 
-    @Mock
-    var sharedPrefUtils: SharedPrefUtils? = null
-
     var viewModel: LoginViewModel? = null
 
     @Before
     fun setUp() {
-        MockitoAnnotations.initMocks(this)
+        MockitoAnnotations.openMocks(this)
         Dispatchers.setMain(dispatcher)
-        viewModel = LoginViewModel(repo!!, sharedPrefUtils!!)
+        viewModel = LoginViewModel(repo!!)
     }
 
     @Test
@@ -80,7 +75,6 @@ class LoginViewModelTest {
         TestCase.assertTrue(result == LoginSignupConstants.EN_FORM_VALIDATED.toString())
 
     }
-/*
 
     @Test
     fun testLogin() =
@@ -94,11 +88,24 @@ class LoginViewModelTest {
             viewModel?.performLogin(email, password)
             dispatcher.scheduler.advanceUntilIdle()
 
-            val result = viewModel?.loginResultLiveData?.await()
+            val result = viewModel?.loginResultLiveData?.getOrAwaitValue()
             TestCase.assertTrue(result != null && result.isNotEmpty() && result[0].userEmail == email)
         }
-*/
 
+
+    @Test
+    fun testUnregisteredUserLogin() =
+        runBlocking {
+            val email = "pratik@test.co"
+            val password = "111111"
+            Mockito.`when`(repo?.performLogin(email, password)).thenReturn(null)
+
+            viewModel?.performLogin(email, password)
+            dispatcher.scheduler.advanceUntilIdle()
+
+            val result = viewModel?.loginResultLiveData?.getOrAwaitValue()
+            TestCase.assertTrue(result == null)
+        }
 
     @After
     fun tearDown() {

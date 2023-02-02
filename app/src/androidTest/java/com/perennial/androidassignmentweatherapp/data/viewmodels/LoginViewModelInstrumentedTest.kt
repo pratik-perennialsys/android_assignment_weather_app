@@ -6,15 +6,15 @@ import android.content.SharedPreferences
 import androidx.room.Room
 import androidx.test.core.app.ApplicationProvider
 import androidx.test.ext.junit.runners.AndroidJUnit4
+import com.perennial.androidassignmentweatherapp.data.models.await
 import com.perennial.androidassignmentweatherapp.data.repo.implementation.LoginRepositoryImpl
+import com.perennial.androidassignmentweatherapp.data.repo.implementation.SignupRepositoryImpl
 import com.perennial.androidassignmentweatherapp.data.room.database.AppDatabase
 import com.perennial.androidassignmentweatherapp.utils.LoginSignupConstants
 import com.perennial.androidassignmentweatherapp.utils.SharedPrefConstants
 import com.perennial.androidassignmentweatherapp.utils.SharedPrefUtils
 import junit.framework.TestCase
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -24,6 +24,8 @@ class LoginViewModelInstrumentedTest : TestCase() {
     private lateinit var viewModel: LoginViewModel
     lateinit var sharedPrefUtils: SharedPrefUtils
     lateinit var sharedPrefs: SharedPreferences
+
+    private lateinit var viewModel2: SignupViewModel
 
     @Before
     public override fun setUp() {
@@ -36,69 +38,85 @@ class LoginViewModelInstrumentedTest : TestCase() {
             SharedPrefConstants.EN_PREF_FILE_NAME.toString(),
             MODE_PRIVATE
         )
-        val sharedPrefUtils = SharedPrefUtils(sharedPrefs)
+        sharedPrefUtils = SharedPrefUtils(sharedPrefs)
 
         val repo = LoginRepositoryImpl(db.loginDatabaseDao)
-        viewModel = LoginViewModel(repo, sharedPrefUtils)
+
+        viewModel = LoginViewModel(repo)
+        val repo2 = SignupRepositoryImpl(db.registerDatabaseDao)
+        viewModel2 = SignupViewModel(repo2)
     }
 
     @Test
     fun testLoginValidationEmptyEmail() {
-        GlobalScope.launch(Dispatchers.Main) {
+        runBlocking {
             viewModel.userEmail = ""
             viewModel.validateLoginForm()
-            viewModel.loginValidationLiveData.observeForever { data ->
-                {
-                    assertTrue(data == LoginSignupConstants.EN_INVALID_EMAIL.toString())
-                }
-            }
+            val data = viewModel.loginValidationLiveData.await()
+            assertTrue(data == LoginSignupConstants.EN_INVALID_EMAIL.toString())
         }
     }
 
     @Test
     fun testLoginValidationInvalidEmail() {
-        GlobalScope.launch(Dispatchers.Main) {
+        runBlocking {
             viewModel.userEmail = "SomeRandomString"
             viewModel.validateLoginForm()
-            viewModel.loginValidationLiveData.observeForever { data ->
-                assertTrue(data == LoginSignupConstants.EN_INVALID_EMAIL.toString())
-            }
+            val data = viewModel.loginValidationLiveData.await()
+            assertTrue(data == LoginSignupConstants.EN_INVALID_EMAIL.toString())
         }
     }
 
     @Test
     fun testLoginValidationEmptyPassword() {
-        GlobalScope.launch(Dispatchers.Main) {
+        runBlocking {
+            viewModel.userEmail = "test@testDomain.co"
             viewModel.password = ""
             viewModel.validateLoginForm()
-            viewModel.loginValidationLiveData.observeForever { data ->
-                assertTrue(data == LoginSignupConstants.EN_INVALID_PASSWORD.toString())
-            }
+            val data = viewModel.loginValidationLiveData.await()
+            assertTrue(data == LoginSignupConstants.EN_INVALID_PASSWORD.toString())
         }
     }
 
     @Test
     fun testLoginValidationValidCredentials() {
-        GlobalScope.launch(Dispatchers.Main) {
+        runBlocking {
             viewModel.userEmail = "someEmail@someDomain.co"
             viewModel.password = "111111"
             viewModel.validateLoginForm()
-            viewModel.loginValidationLiveData.observeForever { data ->
-                assertTrue(data == LoginSignupConstants.EN_FORM_VALIDATED.toString())
-            }
+            val data = viewModel.loginValidationLiveData.await()
+            assertTrue(data == LoginSignupConstants.EN_FORM_VALIDATED.toString())
+        }
+    }
+
+    @Test
+    fun testUnregisteredUserLogin() {
+        runBlocking {
+            val email = "test@test.co"
+            val password = "11111"
+            viewModel.performLogin(email, password)
+
+            val data = viewModel.loginResultLiveData.await()
+            assertTrue(data.isEmpty())
         }
     }
 
     @Test
     fun testLogin() {
-        GlobalScope.launch(Dispatchers.Main) {
-            val email = "someEmail@someDomain.co"
-            val password = "111111"
-            viewModel.performLogin(email,password )
-            viewModel.loginResultLiveData.observeForever { data ->
-                assertTrue(data!=null && data.isNotEmpty() && data[0].userEmail == email)
-                assertTrue(sharedPrefUtils.isUserLoggedIn())
-            }
+        runBlocking {
+            viewModel2.username = "John"
+            viewModel2.userEmail = "test@test.co"
+            viewModel2.password = "11111"
+            viewModel2.userConfirmPassword = "11111"
+            viewModel2.performSignup()
+
+            val email = "test@test.co"
+            val password = "11111"
+            viewModel.performLogin(email, password)
+
+            val data = viewModel.loginResultLiveData.await()
+            assertTrue(data.isNotEmpty() && data[0].userEmail == email)
+            assertTrue(sharedPrefUtils.isUserLoggedIn())
         }
     }
 }

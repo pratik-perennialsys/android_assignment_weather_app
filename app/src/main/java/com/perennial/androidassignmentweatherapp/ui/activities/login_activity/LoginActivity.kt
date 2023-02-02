@@ -20,6 +20,7 @@ import javax.inject.Inject
 class LoginActivity : AppCompatActivity() {
     private var binding: ActivityLoginBinding? = null
     private val viewModel: LoginViewModel by viewModels()
+
     @Inject
     lateinit var sharedPrefUtils: SharedPrefUtils
 
@@ -30,7 +31,7 @@ class LoginActivity : AppCompatActivity() {
     }
 
     private fun init() {
-        if(sharedPrefUtils.isUserLoggedIn())
+        if (sharedPrefUtils.isUserLoggedIn())
             navigateToWeatherActivity()
         binding?.viewModel = viewModel
 
@@ -55,6 +56,7 @@ class LoginActivity : AppCompatActivity() {
             if (data.isEmpty())
                 ToastUtils.showShortToast(this, getString(R.string.err_login_failed))
             else {
+                sharedPrefUtils.syncUserLoginToPreferences(data[0])
                 ToastUtils.showShortToast(this, getString(R.string.login_success))
                 navigateToWeatherActivity()
             }

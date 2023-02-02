@@ -4,9 +4,7 @@ import android.annotation.SuppressLint
 import android.app.Application
 import android.location.Address
 import android.location.Geocoder
-import android.os.Build
 import android.os.Looper
-import androidx.annotation.RequiresApi
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -52,7 +50,6 @@ class LocationWeatherViewModel @Inject constructor(
         }
     }
 
-    @RequiresApi(Build.VERSION_CODES.O)
     fun getWeatherByLocation() {
         viewModelScope.launch(Dispatchers.IO) {
             val res = repository.callWeatherApi(
@@ -149,7 +146,6 @@ class LocationWeatherViewModel @Inject constructor(
         }
     }
 
-    @RequiresApi(Build.VERSION_CODES.O)
     private fun getResponseToEntityObject(responseModel: WeatherApiResponseModel?): WeatherModelEntity? {
         return WeatherModelEntity(
             city = _currentLocationLiveData.value?.city,

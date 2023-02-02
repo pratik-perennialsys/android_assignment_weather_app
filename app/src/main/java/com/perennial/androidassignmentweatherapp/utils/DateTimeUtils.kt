@@ -1,7 +1,5 @@
 package com.perennial.androidassignmentweatherapp.utils
 
-import android.os.Build
-import androidx.annotation.RequiresApi
 import java.math.RoundingMode
 import java.text.DecimalFormat
 import java.text.SimpleDateFormat
@@ -14,7 +12,6 @@ object DateTimeUtils {
         return sdf.format(Date())
     }
 
-    @RequiresApi(Build.VERSION_CODES.N)
     fun getUnixToLocalTime(unixTime: String): String {
         if (unixTime.isEmpty()) return ""
 
@@ -40,7 +37,6 @@ object DateTimeUtils {
         }
     }
 
-    @RequiresApi(Build.VERSION_CODES.O)
     fun isItEveningNow(): Boolean {
         val timeNow = LocalTime.now()
         val timeTo = LocalTime.parse(DateTimeConstants.EN_EVENING_TIME.toString())

@@ -8,15 +8,13 @@ import com.perennial.androidassignmentweatherapp.data.models.entities.UserModelE
 import com.perennial.androidassignmentweatherapp.data.repo.implementation.LoginRepositoryImpl
 import com.perennial.androidassignmentweatherapp.utils.FormValidationUtils
 import com.perennial.androidassignmentweatherapp.utils.LoginSignupConstants
-import com.perennial.androidassignmentweatherapp.utils.SharedPrefUtils
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class LoginViewModel @Inject constructor(val repo: LoginRepositoryImpl,
-                                         private val sharedPrefUtils: SharedPrefUtils
+class LoginViewModel @Inject constructor(val repo: LoginRepositoryImpl
 ) : ViewModel() {
     var password: String = ""
     var userEmail: String = ""
@@ -42,8 +40,7 @@ class LoginViewModel @Inject constructor(val repo: LoginRepositoryImpl,
     fun performLogin(email: String, password: String) {
         viewModelScope.launch(Dispatchers.IO) {
             val loginResult = repo.performLogin(email, password)
-            if(loginResult!=null && loginResult.isNotEmpty())
-                sharedPrefUtils.syncUserLoginToPreferences(loginResult[0])
+
             _loginResult.postValue(loginResult)
         }
     }

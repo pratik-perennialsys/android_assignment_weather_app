@@ -8,7 +8,7 @@ import javax.inject.Inject
 
 class SignupRepositoryImpl @Inject constructor(private val dao: SignupDao): SignupRepository {
 
-    override suspend fun insertSignedUpUser(user: UserModelEntity): Long {
+    override suspend fun insertSignedUpUser(user: UserModelEntity): Long? {
         var insertStatus = -1L
         try{
             insertStatus = dao.insert(user)

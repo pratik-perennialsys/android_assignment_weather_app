@@ -6,7 +6,7 @@ import org.junit.Test
 class FormValidationUtilsTest {
 
     @Test
-    fun getCurrentTime() {
+    fun validateEmail() {
         TestCase.assertTrue(
             !FormValidationUtils.validateEmail("")
         )

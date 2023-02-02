@@ -29,38 +29,42 @@ class SignupViewModel @Inject constructor(
     private val _signupResult = MutableLiveData<String>()
     val signupLiveData: LiveData<String> = _signupResult
 
+    init {
+        _signupResult.postValue("0")
+    }
+
 
     fun validateSignupForm() {
         if (username.isEmpty()) {
-            _signupValidationResult.value = LoginSignupConstants.EN_INVALID_USER_NAME.toString()
+            _signupValidationResult.postValue(LoginSignupConstants.EN_INVALID_USER_NAME.toString())
             return
         }
         if (userEmail.isEmpty() || !FormValidationUtils.validateEmail(userEmail)) {
-            _signupValidationResult.value = LoginSignupConstants.EN_INVALID_EMAIL.toString()
+            _signupValidationResult.postValue(LoginSignupConstants.EN_INVALID_EMAIL.toString())
             return
         }
 
         if (password.isEmpty()) {
-            _signupValidationResult.value = LoginSignupConstants.EN_INVALID_PASSWORD.toString()
+            _signupValidationResult.postValue(LoginSignupConstants.EN_INVALID_PASSWORD.toString())
             return
         } else if (password.length < MIN_PASSWORD_LEN) {
-            _signupValidationResult.value =
-                LoginSignupConstants.EN_INVALID_PASSWORD_LENGTH.toString()
+            _signupValidationResult.postValue(
+                LoginSignupConstants.EN_INVALID_PASSWORD_LENGTH.toString())
             return
         }
 
         if (userConfirmPassword.isEmpty()) {
-            _signupValidationResult.value = LoginSignupConstants.EN_INVALID_PASSWORD.toString()
+            _signupValidationResult.postValue(LoginSignupConstants.EN_INVALID_PASSWORD.toString())
             return
         } else if (userConfirmPassword.length < MIN_PASSWORD_LEN) {
-            _signupValidationResult.value =
-                LoginSignupConstants.EN_INVALID_PASSWORD_LENGTH.toString()
+            _signupValidationResult.postValue(
+                LoginSignupConstants.EN_INVALID_PASSWORD_LENGTH.toString())
             return
         } else if (userConfirmPassword != password) {
-            _signupValidationResult.value = LoginSignupConstants.EN_PASSWORD_NOT_MATCHING.toString()
+            _signupValidationResult.postValue(LoginSignupConstants.EN_PASSWORD_NOT_MATCHING.toString())
             return
         }
-        _signupValidationResult.value = LoginSignupConstants.EN_FORM_VALIDATED.toString()
+        _signupValidationResult.postValue(LoginSignupConstants.EN_FORM_VALIDATED.toString())
     }
 
     fun performSignup() {
@@ -73,7 +77,9 @@ class SignupViewModel @Inject constructor(
                     userPassword = password
                 )
             )
-            if (signupStatus == LoginSignupConstants.EN_SIGNUP_FAIL_REASON.toString().toLong()) {
+            if(signupStatus == null)
+                _signupResult.value = LoginSignupConstants.EN_SIGNUP_FAILED.toString()
+            else if (signupStatus == LoginSignupConstants.EN_SIGNUP_FAIL_REASON.toString().toLong()) {
                 _signupResult.value = LoginSignupConstants.EN_USER_ALREADY_EXIST.toString()
             } else if (signupStatus > 0) {
                 _signupResult.value = LoginSignupConstants.EN_SIGNUP_SUCCESS.toString()
@@ -81,5 +87,4 @@ class SignupViewModel @Inject constructor(
                 _signupResult.value = LoginSignupConstants.EN_SIGNUP_FAILED.toString()
         }
     }
-
 }

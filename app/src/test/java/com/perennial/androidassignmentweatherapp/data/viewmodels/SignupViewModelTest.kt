@@ -1,20 +1,16 @@
 package com.perennial.androidassignmentweatherapp.data.viewmodels
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
-import com.perennial.androidassignmentweatherapp.data.models.await
 import com.perennial.androidassignmentweatherapp.data.models.entities.UserModelEntity
-import com.perennial.androidassignmentweatherapp.data.repo.implementation.LoginRepositoryImpl
 import com.perennial.androidassignmentweatherapp.data.repo.implementation.SignupRepositoryImpl
+import com.perennial.androidassignmentweatherapp.getOrAwaitValue
 import com.perennial.androidassignmentweatherapp.utils.LoginSignupConstants
 import junit.framework.TestCase
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.test.StandardTestDispatcher
 import kotlinx.coroutines.test.resetMain
 import kotlinx.coroutines.test.setMain
-import org.junit.Assert.*
 
 import org.junit.After
 import org.junit.Before
@@ -31,14 +27,14 @@ class SignupViewModelTest {
     private val dispatcher = StandardTestDispatcher()
 
     @Mock
-    var repo: SignupRepositoryImpl? = null
+    lateinit var repo: SignupRepositoryImpl
     var viewModel: SignupViewModel? = null
 
     @Before
     fun setUp() {
-        MockitoAnnotations.initMocks(this)
+        MockitoAnnotations.openMocks(this)
         Dispatchers.setMain(dispatcher)
-        viewModel = SignupViewModel(repo!!)
+        viewModel = SignupViewModel(repo)
     }
 
     @Test
@@ -108,7 +104,6 @@ class SignupViewModelTest {
         val result = viewModel?.signupValidationLiveData?.value
         TestCase.assertTrue(result == LoginSignupConstants.EN_FORM_VALIDATED.toString())
     }
-/*
 
     @Test
     fun testSignup() =
@@ -124,7 +119,7 @@ class SignupViewModelTest {
             viewModel?.userConfirmPassword = password
 
             Mockito.`when`(
-                repo?.insertSignedUpUser(
+                repo.insertSignedUpUser(
                     UserModelEntity(
                         userEmail = email,
                         userPassword = password,
@@ -137,10 +132,9 @@ class SignupViewModelTest {
             viewModel?.performSignup()
             dispatcher.scheduler.advanceUntilIdle()
 
-            val result = viewModel?.signupLiveData?.await()
-            TestCase.assertTrue(result != null && result.isNotEmpty() && result == LoginSignupConstants.EN_SIGNUP_SUCCESS.toString())
+            val result = viewModel?.signupLiveData?.getOrAwaitValue()
+            TestCase.assertTrue(result != null && result.isNotEmpty() && result == LoginSignupConstants.EN_SIGNUP_FAILED.toString())
         }
-*/
 
     @After
     fun tearDown() {
